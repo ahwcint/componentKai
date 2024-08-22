@@ -1,26 +1,13 @@
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+'use client';
+import React from 'react';
+import GlobalSearchBar from '@/components/custom/global-search-ui/GlobalSearchBar';
 
 export default function HomePage() {
   return (
-    <div className="flex justify-center items-center h-full">
-      <Card className="h-fit px-16">
-        <CardHeader>
-          <h1 className="text-center text-xl">Please sign your name</h1>
-        </CardHeader>
-        <CardContent>
-          <Input type="text" className="input: font-bold" />
-        </CardContent>
-        <CardFooter>
-          <Button className="ml-auto">Sign In</Button>
-        </CardFooter>
-      </Card>
+    <div className="h-full w-full">
+      <section className="fixed bottom-0 left-0 p-4 w-full">
+        <GlobalSearchBar />
+      </section>
     </div>
   );
 }
