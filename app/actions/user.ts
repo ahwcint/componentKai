@@ -1,24 +1,26 @@
 'use server';
 import { env } from 'process';
+import axios, { AxiosError, AxiosPromise } from 'axios';
 import { User } from '@prisma/client';
-import { TUserRequest } from '../api/user/type/user.type';
-import { TBaseResponse } from '../api/global.type';
+import {
+  getUserRequestApi,
+  createUserRequestApi,
+} from '../api/user/type/user.type';
+import { requestHandler } from '../api/requestHandler';
 
 const API_URL = env.API_URL;
 
-export async function getUser() {
-  const res = await fetch(`${API_URL}/user`, {
-    method: 'GET',
-  });
-  const data: TBaseResponse<User> = await res.json();
-  return data;
-}
+const API_PATH = `${API_URL}/user`;
 
-export async function createUser(payload: TUserRequest) {
-  const res = await fetch(`${API_URL}/user`, {
-    method: 'POST',
-    body: JSON.stringify(payload),
-  });
-  const data: TBaseResponse<User> = await res.json();
-  return data;
-}
+export const getUser = requestHandler<getUserRequestApi, User>((params) =>
+  axios.get(API_PATH, { params }),
+);
+
+export const listUser = requestHandler<getUserRequestApi, User[]>((params) =>
+  axios.get(API_PATH + '/list', { params }),
+);
+
+// FIXME: show data existed
+export const createUser = requestHandler<createUserRequestApi, User>(
+  (payload) => axios.post(API_PATH, payload),
+);

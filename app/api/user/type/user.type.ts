@@ -1,10 +1,14 @@
 import { User } from '@prisma/client';
 
-export type TUserRequest = {
+export type createUserRequestApi = {
   username: string;
   password: string;
 };
 
-export type TUserResponse = {
+export type getUserRequestApi = {
+  id: string;
+};
+
+export type createUserResponseApi = {
   data: User;
 };

@@ -16,8 +16,8 @@ export const objectCase: {
   {
     condition: '/register',
     action: '/register [username] [password]',
-    fn: (...props) =>
-      createUser({
+    fn: async (...props) =>
+      await createUser({
         username: props[0],
         password: props[1],
       }),

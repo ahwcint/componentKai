@@ -1,19 +1,33 @@
 import * as React from 'react';
-
+import { IconClose } from '../custom/icons/IconClose';
+import { Button } from './Button';
 import { cn } from '@/lib/utils';
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & {
+    closeAction?: boolean;
+    label?: React.ReactNode;
+    onClose?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  }
+>(({ className, closeAction, onClose, label, children, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
-      'rounded-xl border bg-card text-card-foreground shadow',
+      'rounded-xl border bg-card text-card-foreground shadow relative pt-9',
       className,
     )}
     {...props}
-  />
+  >
+    <h6 className="absolute top-0 left-0 bg-transparent px-4 pt-2">{label}</h6>
+    <Button
+      className="absolute top-0 right-0 rounded-full min-w-fit bg-transparent border-primary shadow-none m-1"
+      onClick={onClose}
+    >
+      <IconClose />
+    </Button>
+    {children}
+  </div>
 ));
 Card.displayName = 'Card';
 

@@ -1,14 +1,20 @@
 'use client';
 import React, { ChangeEvent, useRef, useState } from 'react';
-import EnterIcon from '../icons/EnterIcon';
+import { useFormik } from 'formik';
 import { objectCase } from './objectCase';
 import SearchHint from './SearchHint';
-import { Button } from '@/components/ui/Button';
-import { Card, CardContent } from '@/components/ui/Card';
-import { Input } from '@/components/ui/Input';
+import { BackDropCard } from './BackDropCard';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
-import { StatusEnum, TBaseResponse } from '@/app/api/global.type';
+import { Input } from '@/components/ui/input';
+import { API_RESPONSE_STATUS } from '@/app/api/requestHandler.enum';
+import { BaseResponseApi } from '@/app/api/requestHandler.type';
 
 export default function GlobalSearchBar({
   onChange,
@@ -27,7 +33,9 @@ export default function GlobalSearchBar({
   const [search, setSearch] = useState<string | undefined>(undefined);
   const [commandFunction, setCommandFunction] = useState<
     | {
-        currentCommand: (...args: any) => Promise<TBaseResponse<any>>;
+        currentCommand: (
+          ...arg: unknown[]
+        ) => Promise<BaseResponseApi<unknown, string>>;
         payload: any[];
       }
     | undefined
@@ -74,24 +82,31 @@ export default function GlobalSearchBar({
   }
 
   async function executeCommand() {
-    console.log('commandFunction', commandFunction);
     if (commandFunction && commandFunction.currentCommand) {
       const res = await commandFunction.currentCommand(
         ...commandFunction.payload,
       );
-      const isSuccess = res.status === StatusEnum.SUCCESS;
-      const message = res.message.toUpperCase();
+
+      if (res.code === API_RESPONSE_STATUS.ERROR)
+        return toast({
+          className: cn(
+            'top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4',
+          ),
+          variant: 'destructive',
+          title: 'SOMETHING WENT WRONG',
+          description: res.error,
+          duration: 2000,
+        });
 
       toast({
         className: cn(
           'top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4',
         ),
-        variant: isSuccess ? 'default' : 'destructive',
-        title: message || 'Invalid Command Input',
+        variant: 'default',
+        title: 'REGISTER SUCCESS',
         duration: 2000,
       });
-
-      if (isSuccess) resetSearch();
+      resetSearch();
     }
   }
 
@@ -102,34 +117,56 @@ export default function GlobalSearchBar({
   }
 
   function handleHintClicked(hint: string | undefined) {
-    setSearch(hint);
+    setSearch(hint + ' ');
     searchRef.current?.focus();
   }
 
+  const formik = useFormik({
+    initialValues: {
+      globalSearch: '',
+    },
+    onSubmit: () => {
+      executeCommand();
+    },
+  });
+
+  const handleSubmitForm = () => {
+    formik.handleSubmit();
+  };
+
   return (
-    <Card className="border-none">
-      <CardContent className="flex gap-2 flex-wrap" data-placeholder="asdas">
-        <SearchHint
-          placeholder={placeholderHint}
-          onClickHint={(hint) => handleHintClicked(hint)}
-        />
-        <Input
-          ref={searchRef}
-          type="text"
-          className={cn(
-            `font-bold leading-3 -tracking-tighter py-4 px-5 h-8 rounded-full font-mono placeholder:font-light border-ring animate-pulse-sm w-10/12 flex-grow`,
-          )}
-          placeholder={placeholderInput}
-          onChange={handleInputChange}
-          value={search || ''}
-        />
-        <Button
-          className="rounded-full font-extrabold min-w-28 flex-grow"
-          onClick={executeCommand}
-        >
-          <EnterIcon colorStroke="white" />
-        </Button>
-      </CardContent>
-    </Card>
+    <BackDropCard>
+      <Card
+        closeAction
+        className="shadow-none border-primary border-2 rounded-3xl min-h-32 h-fit m-auto md:w-2/4 max-w-5xl sm:w-full"
+      >
+        <CardContent className="flex gap-2 flex-wrap p-3 pb-4 content-start">
+          <SearchHint
+            placeholder={placeholderHint}
+            onClickHint={(hint) => handleHintClicked(hint)}
+          />
+          <form className="contents" onSubmit={formik.handleSubmit}>
+            <Input
+              ref={searchRef}
+              type="text"
+              className={cn(
+                'shadow-none w-10/12 border-b-2 flex-grow rounded-3xl border-0 ring-1 ring-primary',
+              )}
+              placeholder={placeholderInput}
+              onChange={handleInputChange}
+              value={search || ''}
+              tabIndex={1}
+            />
+          </form>
+        </CardContent>
+        <CardFooter>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+        </CardFooter>
+      </Card>
+    </BackDropCard>
   );
 }

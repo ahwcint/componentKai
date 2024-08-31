@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import NextIcon from '../icons/NextIcon';
+import { IconNext } from '../icons/IconNext';
 import { Container } from './styled.component';
 import { Button } from '@/components/ui/Button';
+import { cn } from '@/lib/utils';
 
 export default function SearchHint(props: {
   placeholder: Set<string> | undefined;
@@ -16,7 +17,6 @@ export default function SearchHint(props: {
   const [actualRender, setActualRender] = useState<string | undefined>(
     undefined,
   );
-  const isFirstTimeRender = size !== undefined;
 
   function handleNextHint() {
     setIndexHint((prev) => {
@@ -34,32 +34,40 @@ export default function SearchHint(props: {
     setIndexHint(0);
     setActualRender(totalHint[0]);
   }, [totalHint]);
-  return isFirstTimeRender ? (
-    <Container
-      className={'bg-primary w-full rounded-xl pl-16'}
-      isExpand={size ? true : false}
-      textInlineStart={'HINT'}
+  return (
+    <div
+      className={cn(
+        `transition-[height] ${!!size ? 'h-6' : 'h-0'} overflow-visible w-full`,
+      )}
     >
-      <section className="flex justify-between h-full">
-        <Button
-          onClick={handleHintClicked}
-          className="h-full p-2"
-          variant={'ghost'}
-        >
-          <p>{actualRender}</p>
-        </Button>
-        {size ? (
+      <Container
+        className={cn('bg-primary w-full rounded-xl pl-16 h-6')}
+        isExpand={size ? true : false}
+        textInlineStart={'HINT'}
+      >
+        <section className="flex justify-between h-full">
           <Button
-            onClick={handleNextHint}
-            className="h-full rounded-full text-white gap-2"
+            onClick={handleHintClicked}
+            className="h-full p-2 focus-visible:bg-primary-foreground"
             variant={'ghost'}
-            disabled={size < 2}
+            tabIndex={actualRender ? 2 : -1}
           >
-            <p>{`${indexHint + 1}/${size}`}</p>
-            <NextIcon colorFill="white" width="1rem" height="1rem" />
+            <p>{actualRender}</p>
           </Button>
-        ) : null}
-      </section>
-    </Container>
-  ) : null;
+          {size ? (
+            <Button
+              onClick={handleNextHint}
+              className="h-full rounded-full text-white gap-2"
+              variant={'ghost'}
+              disabled={size < 2}
+              tabIndex={-1}
+            >
+              <p>{`${indexHint + 1}/${size}`}</p>
+              <IconNext />
+            </Button>
+          ) : null}
+        </section>
+      </Container>
+    </div>
+  );
 }

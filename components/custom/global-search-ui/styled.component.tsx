@@ -8,8 +8,7 @@ export const Container = styled.div<
   color: 'goldenrod',
   animation: `${props.isExpand ? 'expandInline' : 'collapeInline'} 0.3s ease forwards`,
   whiteSpace: 'nowrap',
-  height: '1.5rem',
-  opacity: '0',
+  opacity: '1',
   '&::before': {
     content: "''",
     position: 'absolute',
@@ -17,7 +16,7 @@ export const Container = styled.div<
     left: '0',
     width: '3.6rem',
     height: 'inherit',
-    borderRight: '5px solid black',
+    borderRight: '5px solid transparent',
     paddingInlineStart: '0.5rem',
     paddingInlineEnd: '0.35rem',
     transform: 'skew(-20deg)',

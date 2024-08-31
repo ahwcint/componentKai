@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Kanit } from 'next/font/google';
 import './globals.css';
 import { AuthenContextProvider } from '@/lib/context/AuthenContextProvider';
+import QueryProvider from '@/lib/providers/QueryProvider';
 import { Toaster } from '@/components/ui/toaster';
 
 const kanit = Kanit({
@@ -19,10 +20,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className={kanit.className}>
-        <AuthenContextProvider>{children}</AuthenContextProvider>
-        <Toaster />
+        <QueryProvider>
+          <AuthenContextProvider>
+            {children}
+            <Toaster />
+          </AuthenContextProvider>
+        </QueryProvider>
       </body>
     </html>
   );
