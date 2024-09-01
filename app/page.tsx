@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { User } from '@prisma/client';
 import { createUser, listUser } from './actions/user';
-import GlobalSearchBar from '@/components/custom/global-search-ui/GlobalSearchBar';
 import { API_RESPONSE_STATUS } from './api/requestHandler.enum';
+import GlobalSearchBar from '@/components/custom/global-search-ui/GlobalSearchBar';
 
 export default function HomePage() {
   const [userList, setUserList] = useState<User[]>([]);
@@ -21,7 +21,7 @@ export default function HomePage() {
       <section className="fixed bottom-0 left-0 p-4 w-full">
         <GlobalSearchBar />
         {userList.map((user) => (
-          <div>{user.username}</div>
+          <div key={user.username}>{user.username}</div>
         ))}
       </section>
     </div>

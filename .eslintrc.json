@@ -9,7 +9,7 @@
     "check-file/filename-naming-convention": [
       "error",
       {
-        "src/app/**/*.{tsx}": "PASCAL_CASE"
+        "app/**/*.{tsx}": "PASCAL_CASE"
       },
       {
         "ignoreMiddleExtensions": true
