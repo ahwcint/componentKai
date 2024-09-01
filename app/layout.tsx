@@ -4,6 +4,7 @@ import './globals.css';
 import { AuthenContextProvider } from '@/lib/context/AuthenContextProvider';
 import QueryProvider from '@/lib/providers/QueryProvider';
 import { Toaster } from '@/components/ui/toaster';
+import { cn } from '@/lib/utils';
 
 const kanit = Kanit({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -21,7 +22,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={kanit.className}>
+      <body className={cn(`${kanit.className}`)}>
         <QueryProvider>
           <AuthenContextProvider>
             {children}

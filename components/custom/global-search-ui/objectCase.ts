@@ -1,3 +1,4 @@
+import { signupUser } from '@/app/actions/auth';
 import { createUser } from '@/app/actions/user';
 
 export const objectCase: {
@@ -17,7 +18,7 @@ export const objectCase: {
     condition: '/register',
     action: '/register [username] [password]',
     fn: async (...props) =>
-      await createUser({
+      await signupUser({
         username: props[0],
         password: props[1],
       }),

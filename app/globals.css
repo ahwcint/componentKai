@@ -89,6 +89,7 @@
     --destructive: 0 100% 30%;
     --destructive-foreground: 259 5% 90%;
     --border: 259 30% 50%;
+    --border-card: 280 100% 86%;
     --input: 259 30% 18%;
     --ring: 259 100% 54%;
     --radius: 0.5rem;
@@ -112,6 +113,7 @@
     --destructive: 0 100% 30%;
     --destructive-foreground: 259 5% 90%;
     --border: 259 30% 18%;
+    --border-card: 280 100% 86%;
     --input: 259 30% 18%;
     --ring: 259 100% 54%;
     --radius: 0.5rem;

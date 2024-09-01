@@ -2,13 +2,13 @@ import { CSSProperties } from 'react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div<
-  CSSProperties & { isExpand: boolean; textInlineStart: string }
+  CSSProperties & { isExpand: boolean | undefined; textInlineStart: string }
 >((props) => ({
   position: 'relative',
   color: 'goldenrod',
-  animation: `${props.isExpand ? 'expandInline' : 'collapeInline'} 0.3s ease forwards`,
+  animation: `${props.isExpand === undefined ? '' : props.isExpand ? 'expandInline' : 'collapeInline'} 0.3s ease forwards`,
   whiteSpace: 'nowrap',
-  opacity: '1',
+  opacity: '0',
   '&::before': {
     content: "''",
     position: 'absolute',

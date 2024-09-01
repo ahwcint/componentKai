@@ -3,33 +3,66 @@ import { IconClose } from '../custom/icons/IconClose';
 import { Button } from './Button';
 import { cn } from '@/lib/utils';
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & {
-    closeAction?: boolean;
-    label?: React.ReactNode;
+export type CardType = React.HTMLAttributes<HTMLDivElement> & {
+  closeAction?: boolean;
+  label?: React.ReactNode;
+  onClose?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+};
+
+const Card = React.forwardRef<HTMLDivElement, CardType>(
+  (
+    { className, closeAction = true, onClose, label, children, ...props },
+    ref,
+  ) => (
+    <div
+      ref={ref}
+      className={cn(
+        `rounded-xl border bg-card text-card-foreground shadow relative ${closeAction ? 'pt-9' : ''}`,
+        className,
+      )}
+      {...props}
+    >
+      <CardLabel label={label} open={!!label} />
+      <CloseButton onClose={onClose} open={closeAction} />
+      {children}
+    </div>
+  ),
+);
+Card.displayName = 'Card';
+
+const CloseButton = React.forwardRef<
+  HTMLButtonElement,
+  React.HTMLAttributes<HTMLButtonElement> & {
+    open: boolean;
     onClose?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   }
->(({ className, closeAction, onClose, label, children, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'rounded-xl border bg-card text-card-foreground shadow relative pt-9',
-      className,
-    )}
-    {...props}
-  >
-    <h6 className="absolute top-0 left-0 bg-transparent px-4 pt-2">{label}</h6>
+>(({ open, onClose }, ref) =>
+  open ? (
     <Button
       className="absolute top-0 right-0 rounded-full min-w-fit bg-transparent border-primary shadow-none m-1"
       onClick={onClose}
+      ref={ref}
     >
       <IconClose />
     </Button>
-    {children}
-  </div>
-));
-Card.displayName = 'Card';
+  ) : null,
+);
+CloseButton.displayName = 'CloseButton';
+
+const CardLabel = React.forwardRef<
+  HTMLHeadingElement,
+  React.HTMLAttributes<HTMLHeadingElement> & {
+    label?: React.ReactNode;
+    open: boolean;
+  }
+>(({ open, label }, ref) =>
+  open ? (
+    <h6 className="absolute top-0 left-0 bg-transparent px-4 pt-2" ref={ref}>
+      {label}
+    </h6>
+  ) : null,
+);
+CardLabel.displayName = 'CardLabel';
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,

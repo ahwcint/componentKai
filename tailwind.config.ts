@@ -19,13 +19,19 @@ const config = {
     },
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
+        border: {
+          DEFAULT: 'hsl(var(--border))',
+          card: 'hsl(var(--border-card))',
+        },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
+          25: 'hsl(var(--primary) / .25)',
+          50: 'hsl(var(--primary) / .50)',
+          75: 'hsl(var(--primary) / .75)',
           foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
