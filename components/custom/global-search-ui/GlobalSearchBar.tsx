@@ -4,12 +4,7 @@ import { useFormik } from 'formik';
 import { objectCase } from './objectCase';
 import SearchHint from './SearchHint';
 import { BackDropCard } from './BackDropCard';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from '@/components/ui/Card';
+import { Card, CardContent, CardFooter } from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
